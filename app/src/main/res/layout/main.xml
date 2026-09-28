@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+    <LinearLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Phone To MCP"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Server berhenti"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/localUrlText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Lokal: http://127.0.0.1:9009/mcp"
+            android:textIsSelectable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tunnel:"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/publicUrlText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Tunnel: belum aktif"
+            android:textColor="#1A73E8"
+            android:textIsSelectable="true"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Start Server" />
+
+        <Button
+            android:id="@+id/stopButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Stop Server" />
+
+        <Button
+            android:id="@+id/permissionsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Minta Semua Izin Runtime" />
+
+        <Button
+            android:id="@+id/allOnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aktifkan Semua Tool" />
+
+        <Button
+            android:id="@+id/allOffButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nonaktifkan Semua Tool" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Akses khusus"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/batteryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Izinkan Berjalan Tanpa Optimasi Baterai" />
+
+        <Button
+            android:id="@+id/vivoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buka Pengaturan Autostart Vivo" />
+
+        <Button
+            android:id="@+id/storageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kelola Semua File" />
+
+        <Button
+            android:id="@+id/notificationAccessButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Akses Notifikasi" />
+
+        <Button
+            android:id="@+id/accessibilityButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aksesibilitas" />
+
+        <Button
+            android:id="@+id/usageButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Usage Access" />
+
+        <Button
+            android:id="@+id/overlayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tampilkan Di Atas Aplikasi Lain" />
+
+        <Button
+            android:id="@+id/screenCaptureButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Berikan Akses Tangkapan Layar" />
+
+        <Button
+            android:id="@+id/writeSettingsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ubah Pengaturan Sistem" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Terminal"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/terminalStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Memeriksa Termux..."
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/terminalSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Izinkan Eksekusi Terminal via Termux" />
+
+        <Button
+            android:id="@+id/terminalPermissionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buka Pengaturan Izin Terminal" />
+
+        <Button
+            android:id="@+id/terminalLogsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lihat Terminal Log" />
+
+        <TextView
+            android:id="@+id/tokenText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Token MCP"
+            android:textIsSelectable="true"
+            android:textSize="14sp" />
+
+        <Switch
+            android:id="@+id/authSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Wajibkan token MCP" />
+
+        <Button
+            android:id="@+id/regenerateTokenButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Buat Token Baru" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Kontrol tool MCP"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/toolContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </LinearLayout>
+</ScrollView>
