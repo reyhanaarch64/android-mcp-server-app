@@ -1,0 +1,85 @@
+Manifest-Version: 1.0
+Built-By: Signflinger
+Created-By: Android Gradle 8.0.2
+
+Name: AndroidManifest.xml
+SHA1-Digest: /YNYrKFNLyu6E1RGcO7GHQ4PCEc=
+
+Name: IMPLEMENTATION_NOTES.txt
+SHA1-Digest: Sci6WsKoKMF0H6fiPIpqLJQTgaU=
+
+Name: java/mcp/android/phone/BootReceiver.java
+SHA1-Digest: 4ROs4f8v7TdefgdXslPPKWf0FQA=
+
+Name: java/mcp/android/phone/CrashDiagnostics.java
+SHA1-Digest: oPPJEQ11WCyUyIa174zLJUK7nEE=
+
+Name: java/mcp/android/phone/FileOps.java
+SHA1-Digest: Z0ZYy1OEHkujMQbLYllAE8Epf5A=
+
+Name: java/mcp/android/phone/MainActivity.java
+SHA1-Digest: o+F25dIyPsImzMPJv35Gq8S/P2c=
+
+Name: java/mcp/android/phone/McpServer.java
+SHA1-Digest: IujGZo36RxNhis08wEpNI45EyuU=
+
+Name: java/mcp/android/phone/PermissionUtil.java
+SHA1-Digest: cxNus4iOCM6+Yaxd1q1+37DNrWo=
+
+Name: java/mcp/android/phone/PhoneAccessibilityService.java
+SHA1-Digest: 67j3NIG9PstfVUUrPTaTkJC7NZU=
+
+Name: java/mcp/android/phone/PhoneFileProvider.java
+SHA1-Digest: qLsbKzlaV/BJk2Nx+495JlAsEbM=
+
+Name: java/mcp/android/phone/PhoneMcpService.java
+SHA1-Digest: O6+enBX1TCpJEUFQJh07VXrWjAE=
+
+Name: java/mcp/android/phone/PhoneNotificationListener.java
+SHA1-Digest: h32RpSi2AQQRITT6fl5KF+tcYW8=
+
+Name: java/mcp/android/phone/ScreenCaptureActivity.java
+SHA1-Digest: MBMu73dMH9IOUGtP1gE5iO4zlW4=
+
+Name: java/mcp/android/phone/ScreenCaptureManager.java
+SHA1-Digest: zzR8QUfP+znvBMB2aVE8NZdyxD4=
+
+Name: java/mcp/android/phone/ServiceRecoveryReceiver.java
+SHA1-Digest: ACB2Noa+0Ch8fUwT2K0TL1Qvmdk=
+
+Name: java/mcp/android/phone/TerminalExecManager.java
+SHA1-Digest: 1MToxtBx2xMqPADcyXYw4rfbkMI=
+
+Name: java/mcp/android/phone/TerminalLogActivity.java
+SHA1-Digest: WYEFFsF8InIk8hnczRVGS3ThNQw=
+
+Name: java/mcp/android/phone/TerminalLogDb.java
+SHA1-Digest: dfnvoCIZUKLAblzpHL1L3d+J+EU=
+
+Name: java/mcp/android/phone/TerminalResultService.java
+SHA1-Digest: K5W7fJItH1Y6fvuvRanH0Qx7bjU=
+
+Name: java/mcp/android/phone/ToolDef.java
+SHA1-Digest: AGvK/By/gTOlRi7/yH1sbpQ3PWM=
+
+Name: java/mcp/android/phone/ToolRegistry.java
+SHA1-Digest: rYKtpkz+12zcq9qkm32hYld78pM=
+
+Name: java/mcp/android/phone/ToolSettings.java
+SHA1-Digest: 0m3z6uGchbdk5P6y8g1XS9s8HVc=
+
+Name: res/drawable/ic_launcer.png
+SHA1-Digest: Pj99OfwuPt9MIGX5wqZK110vdzQ=
+
+Name: res/layout/main.xml
+SHA1-Digest: GJzXwhBib4VKdj14jJFFNOWmyDk=
+
+Name: res/values/strings.xml
+SHA1-Digest: pJimlRs96ef5ekAGjjsd9tzi284=
+
+Name: res/values/styles.xml
+SHA1-Digest: 6u99deChF0+z9ciXzetBS1o1bEA=
+
+Name: res/xml/accessibility_service_config.xml
+SHA1-Digest: u8zAh0itYDup7AKAW1GIo4PiR9g=
+
