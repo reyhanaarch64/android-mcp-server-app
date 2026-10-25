@@ -347,3 +347,6 @@ hal-hal yang sangat disarankan untuk project ini:
 ---
 
 repo ini sangat powerfull dan punya scope yang jauh lebih besar daripada browser-only app. karena itu, README dan dokumentasinya perlu dibuat dengan hati-hati agar jelas siapa yang bisa pakai, apa yang bisa diakses, dan risikonya.
+
+
+[![M8ven Score](https://m8ven.ai/badge/mcp/reyhanaarch64/android-mcp-server-app)](https://m8ven.ai/mcp/reyhanaarch64/android-mcp-server-app?s=readme)
