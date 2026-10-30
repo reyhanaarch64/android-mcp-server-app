@@ -1,6 +1,6 @@
 # android mcp server app
 
-android mcp server app adalah aplikasi android native yang mengekspos fungsi perangkat ke model ai via protokol mcp (model context protocol). project ini bukan hanya browser, tapi server kontrol perangkat: ia membuka endpoint mcp lokal di smartphone dan memungkinkan client ai mengakses fitur seperti kontak, sms, log panggilan, file, notifikasi, lokasi, kamera, media, aksesibilitas, dan pengaturan sistem dengan skema tool yang bisa diaktifkan/ditutup.
+android mcp server app adalah aplikasi android native yang mengekspos fungsi perangkat ke model ai via protokol mcp (model context protocol). project ini adalah server kontrol perangkat: ia membuka endpoint mcp lokal di smartphone dan memungkinkan client ai mengakses fitur seperti kontak, sms, log panggilan, file, notifikasi, lokasi, kamera, media, aksesibilitas, dan pengaturan sistem dengan skema tool yang bisa diaktifkan/ditutup.
 
 ## ringkasan
 
@@ -26,7 +26,6 @@ project ini dibuat untuk menyalurkan kemampuan perangkat android ke model ai. be
 - menangani notifikasi
 - mengakses lokasi dan jaringan
 - mengambil screenshot atau menangani capture layar
-- membuka dan mengontrol browser webview
 - menjalankan perintah terminal jika termux terpasang
 - mengelola aplikasi dan pengaturan sistem tertentu
 
@@ -44,11 +43,16 @@ android-mcp-server-app/
 │   └── src/
 │       └── main/
 │           ├── AndroidManifest.xml
+│           ├── assets/
+│           │   └── fontawesome/
+│           │       ├── fa-brands-400.ttf
+│           │       ├── fa-regular-400.ttf
+│           │       └── fa-solid-900.ttf
 │           ├── java/mcp/android/phone/
 │           │   ├── BootReceiver.java
-│           │   ├── BrowserManager.java
 │           │   ├── CrashDiagnostics.java
 │           │   ├── FileOps.java
+│           │   ├── JsonToolsManager.java
 │           │   ├── MainActivity.java
 │           │   ├── McpServer.java
 │           │   ├── PermissionUtil.java
@@ -67,18 +71,18 @@ android-mcp-server-app/
 │           │   ├── ToolRegistry.java
 │           │   └── ToolSettings.java
 │           ├── jniLibs/arm64-v8a/libcloudflared.so
-│           ├── res/
-│           │   ├── drawable/
-│           │   ├── layout/
-│           │   ├── values/
-│           │   └── xml/
-│           └── META-INF/
+│           └── res/
+│               ├── drawable/ic_launcer.png
+│               ├── layout/main.xml
+│               ├── values/
+│               │   ├── strings.xml
+│               │   └── styles.xml
+│               └── xml/accessibility_service_config.xml
 ├── build.gradle
 ├── settings.gradle
 ├── .gitignore
 ├── README.md
-├── LICENSE
-└── .github
+└── LICENSE
 ```
 
 ## pembaruan terbaru
@@ -110,7 +114,6 @@ ini membuat app terasa seperti dashboard kontrol device untuk ai agent.
 - akses telepon, kontak, sms, panggilan, kalender
 - akses lokasi, bluetooth, wi-fi, jaringan
 - pemeriksaan app dan permission
-- kontrol browser dan webview
 - screen capture
 - notifications dan accessibility
 - terminal / termux integration
@@ -154,7 +157,6 @@ ia mem-parsing request, memeriksa auth bearer bila diaktifkan, lalu memanggil to
 - clipboard
 - displaywrite
 - ui
-- browser
 - hardware
 - settings
 - screen
@@ -183,7 +185,7 @@ fitur ini artinya app ini mengandung kemungkinan akses yang sangat luas ke data 
 
 ## fitur yang paling mencolok
 
-repo ini jauh lebih kuat dan berisiko dibanding browser-only app karena mengandung tool seperti:
+repo ini jauh lebih kuat dan berisiko dibanding server mcp biasa karena mengandung tool seperti:
 
 - akses kontak dan sms
 - log panggilan
@@ -327,7 +329,7 @@ fitur paling khas project ini adalah kombinasi beberapa hal:
 - server MCP local
 - tool registry yang besar
 - kontrol device-level
-- akses notifikasi, kontaks, sms, lokasi, kamera, storage, ui, browser, dan terminal
+- akses notifikasi, kontaks, sms, lokasi, kamera, storage, ui, dan terminal
 - bonding dengan permission android dan accessibility system
 
 project ini lebih cocok dipahami sebagai "AI device agent runtime" ketimbang server mcp biasa.
@@ -352,7 +354,7 @@ hal-hal yang sangat disarankan untuk project ini:
 
 ---
 
-repo ini sangat powerfull dan punya scope yang jauh lebih besar daripada browser-only app. karena itu, README dan dokumentasinya perlu dibuat dengan hati-hati agar jelas siapa yang bisa pakai, apa yang bisa diakses, dan risikonya.
+repo ini sangat powerfull dan punya scope yang jauh lebih besar daripada server mcp biasa. karena itu, README dan dokumentasinya perlu dibuat dengan hati-hati agar jelas siapa yang bisa pakai, apa yang bisa diakses, dan risikonya.
 
 
 [![M8ven Score](https://m8ven.ai/badge/mcp/reyhanaarch64/android-mcp-server-app)](https://m8ven.ai/mcp/reyhanaarch64/android-mcp-server-app?s=readme)
