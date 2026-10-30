@@ -417,13 +417,25 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
         if (Build.VERSION.SDK_INT >= 23) pi = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         else pi = PendingIntent.getActivity(this, 0, open, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder b = Build.VERSION.SDK_INT >= 26 ? new Notification.Builder(this, CHANNEL_ID) : new Notification.Builder(this);
+        String copyUrl = publicUrl;
+        if (copyUrl == null || copyUrl.length() == 0) copyUrl = "http://127.0.0.1:" + McpServer.PORT + "/mcp";
+        Intent copyIntent = new Intent(this, CopyUrlReceiver.class);
+        copyIntent.setAction(CopyUrlReceiver.ACTION_COPY_URL);
+        copyIntent.putExtra(CopyUrlReceiver.EXTRA_URL, copyUrl);
+        PendingIntent copyPending;
+        if (Build.VERSION.SDK_INT >= 23) {
+            copyPending = PendingIntent.getBroadcast(this, 9010, copyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            copyPending = PendingIntent.getBroadcast(this, 9010, copyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
         b.setSmallIcon(getApplicationInfo().icon)
                 .setContentTitle("Phone To MCP")
                 .setContentText(text)
                 .setOngoing(true)
                 .setAutoCancel(false)
                 .setOnlyAlertOnce(true)
-                .setContentIntent(pi);
+                .setContentIntent(pi)
+                .addAction(0, "copyly", copyPending);
         return b.build();
     }
 

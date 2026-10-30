@@ -17,6 +17,8 @@ import android.text.TextPaint;
 import android.text.style.MetricAffectingSpan;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.content.res.ColorStateList;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -46,6 +48,9 @@ public class MainActivity extends Activity {
     private Button tabDashboard;
     private Button tabTools;
     private Button tabAccess;
+    private Button serverToggleButton;
+    private Switch themeSwitch;
+    private boolean darkMode;
     private boolean lastTermuxInstalled;
     private Typeface faSolidTypeface;
     private Typeface faRegularTypeface;
@@ -76,6 +81,9 @@ public class MainActivity extends Activity {
         tabDashboard = (Button) findViewById(R.id.tabDashboard);
         tabTools = (Button) findViewById(R.id.tabTools);
         tabAccess = (Button) findViewById(R.id.tabAccess);
+        serverToggleButton = (Button) findViewById(R.id.serverToggleButton);
+        themeSwitch = (Switch) findViewById(R.id.themeSwitch);
+        darkMode = getSharedPreferences("ui", MODE_PRIVATE).getBoolean("dark_mode", false);
 
         styleCard(findViewById(R.id.serverCard));
         styleCard(findViewById(R.id.tokenCard));
@@ -87,14 +95,20 @@ public class MainActivity extends Activity {
         setFontAwesomeButton((Button) findViewById(R.id.localUrlCopyButton), "\uf0c5", "Salin URL lokal");
         setFontAwesomeButton((Button) findViewById(R.id.publicUrlCopyButton), "\uf0c5", "Salin URL tunnel");
         setFontAwesomeButton((Button) findViewById(R.id.tokenCopyButton), "\uf0c5", "Salin token");
-        setFontAwesomeButton((Button) findViewById(R.id.startButton), "\uf04b", "Start server");
-        setFontAwesomeButton((Button) findViewById(R.id.stopButton), "\uf04d", "Stop server");
-
-        findViewById(R.id.startButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { startServer(); }
+        updateServerToggleButton();
+        serverToggleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (isServiceRunning()) stopServer();
+                else startServer();
+            }
         });
-        findViewById(R.id.stopButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) { stopServer(); }
+        themeSwitch.setChecked(darkMode);
+        themeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton button, boolean checked) {
+                darkMode = checked;
+                getSharedPreferences("ui", MODE_PRIVATE).edit().putBoolean("dark_mode", checked).apply();
+                applyTheme();
+            }
         });
         View terminalLogButton = findViewById(R.id.terminalLogButton);
         lastTermuxInstalled = TerminalExecManager.isInstalled(this);
@@ -191,6 +205,7 @@ public class MainActivity extends Activity {
 
         updateToken(false);
         refreshTools();
+        applyTheme();
         showTab(TAB_DASHBOARD);
         refreshStatus();
     }
@@ -251,9 +266,9 @@ public class MainActivity extends Activity {
     private void styleCard(View view) {
         if (view == null) return;
         GradientDrawable background = new GradientDrawable();
-        background.setColor(Color.WHITE);
+        background.setColor(darkMode ? Color.rgb(17, 17, 17) : Color.WHITE);
         background.setCornerRadius(dp(16));
-        background.setStroke(dp(1), Color.rgb(229, 233, 241));
+        background.setStroke(dp(1), darkMode ? Color.rgb(42, 42, 42) : Color.rgb(229, 233, 241));
         view.setBackgroundDrawable(background);
         if (Build.VERSION.SDK_INT >= 21) view.setElevation(dp(2));
     }
@@ -268,9 +283,11 @@ public class MainActivity extends Activity {
         if (button == null) return;
         GradientDrawable background = new GradientDrawable();
         background.setCornerRadius(dp(12));
-        background.setColor(selected ? Color.rgb(31, 78, 151) : Color.TRANSPARENT);
+        background.setColor(selected
+                ? (darkMode ? Color.rgb(42, 42, 42) : Color.rgb(45, 103, 190))
+                : Color.TRANSPARENT);
         button.setBackgroundDrawable(background);
-        button.setTextColor(selected ? Color.WHITE : Color.rgb(84, 98, 119));
+        button.setTextColor(selected ? Color.WHITE : (darkMode ? Color.rgb(165, 165, 165) : Color.rgb(84, 98, 119)));
         button.setPadding(dp(14), 0, dp(14), 0);
         button.setAllCaps(false);
         button.setTypeface(Typeface.DEFAULT, selected ? Typeface.BOLD : Typeface.NORMAL);
@@ -320,14 +337,15 @@ public class MainActivity extends Activity {
         boolean running = isServiceRunning();
         if (running) {
             statusText.setText("Server aktif");
-            statusText.setTextColor(Color.rgb(28, 132, 84));
+            statusText.setTextColor(Color.rgb(48, 190, 128));
         } else if (desired) {
             statusText.setText("Menunggu pemulihan server");
-            statusText.setTextColor(Color.rgb(178, 111, 28));
+            statusText.setTextColor(Color.rgb(224, 164, 75));
         } else {
             statusText.setText("Server dimatikan");
-            statusText.setTextColor(Color.rgb(80, 91, 108));
+            statusText.setTextColor(darkMode ? Color.rgb(185, 197, 214) : Color.rgb(80, 91, 108));
         }
+        updateServerToggleButton();
         localUrlText.setText("http://127.0.0.1:9009/mcp");
 
         String publicUrl = getSharedPreferences("server", MODE_PRIVATE).getString("public_url", null);
@@ -411,17 +429,17 @@ public class MainActivity extends Activity {
         TextView header = new TextView(this);
         header.setText(title);
         header.setTextSize(15);
-        header.setTextColor(Color.rgb(31, 43, 62));
+        header.setTextColor(primaryTextColor());
         header.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         heading.addView(header, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         TextView counter = new TextView(this);
         counter.setText(String.valueOf(count));
         counter.setTextSize(11);
-        counter.setTextColor(Color.rgb(49, 94, 173));
+        counter.setTextColor(darkMode ? Color.rgb(225, 225, 225) : Color.rgb(49, 94, 173));
         counter.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         counter.setGravity(Gravity.CENTER);
         GradientDrawable counterBg = new GradientDrawable();
-        counterBg.setColor(Color.rgb(233, 240, 252));
+        counterBg.setColor(darkMode ? Color.rgb(35, 35, 35) : Color.rgb(233, 240, 252));
         counterBg.setCornerRadius(dp(20));
         counter.setBackgroundDrawable(counterBg);
         counter.setPadding(dp(9), dp(4), dp(9), dp(4));
@@ -429,7 +447,7 @@ public class MainActivity extends Activity {
         card.addView(heading);
 
         View divider = new View(this);
-        divider.setBackgroundColor(Color.rgb(232, 236, 243));
+        divider.setBackgroundColor(darkMode ? Color.rgb(51, 65, 85) : Color.rgb(232, 236, 243));
         LinearLayout.LayoutParams dividerParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
         dividerParams.topMargin = dp(10);
@@ -450,13 +468,13 @@ public class MainActivity extends Activity {
             TextView name = new TextView(this);
             name.setText(tool.name);
             name.setTextSize(13);
-            name.setTextColor(Color.rgb(39, 51, 70));
+            name.setTextColor(primaryTextColor());
             name.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
             labels.addView(name);
             TextView description = new TextView(this);
             description.setText(tool.description);
             description.setTextSize(10);
-            description.setTextColor(Color.rgb(112, 123, 141));
+            description.setTextColor(secondaryTextColor());
             description.setMaxLines(2);
             description.setPadding(0, dp(2), 0, 0);
             labels.addView(description);
@@ -479,10 +497,111 @@ public class MainActivity extends Activity {
                 }
                 if (hasNextInCategory) {
                     View line = new View(this);
-                    line.setBackgroundColor(Color.rgb(241, 243, 247));
+                    line.setBackgroundColor(darkMode ? Color.rgb(43, 54, 72) : Color.rgb(241, 243, 247));
                     card.addView(line, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(1)));
                 }
             }
+        }
+    }
+
+    private int primaryTextColor() {
+        return darkMode ? Color.rgb(242, 242, 242) : Color.rgb(39, 51, 70);
+    }
+
+    private int secondaryTextColor() {
+        return darkMode ? Color.rgb(165, 165, 165) : Color.rgb(112, 123, 141);
+    }
+
+    private void updateServerToggleButton() {
+        if (serverToggleButton == null) return;
+        boolean running = isServiceRunning();
+        String glyph = running ? "\uf04d" : "\uf04b";
+        String label = running ? "Stop server" : "Start server";
+        setFontAwesomeButton(serverToggleButton, glyph, label);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setCornerRadius(dp(12));
+        bg.setColor(running ? Color.rgb(176, 55, 64) : Color.rgb(39, 119, 82));
+        serverToggleButton.setBackgroundDrawable(bg);
+        serverToggleButton.setTextColor(Color.WHITE);
+    }
+
+    private void applyTheme() {
+        int background = darkMode ? Color.BLACK : Color.rgb(243, 245, 249);
+        int panel = darkMode ? Color.BLACK : Color.WHITE;
+        int headerColor = darkMode ? Color.BLACK : Color.rgb(23, 32, 51);
+        View root = findViewById(R.id.root);
+        if (root != null) root.setBackgroundColor(background);
+        View scroll = findViewById(R.id.contentScroll);
+        if (scroll != null) scroll.setBackgroundColor(background);
+
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            if (group.getChildCount() > 0) group.getChildAt(0).setBackgroundColor(headerColor);
+            if (group.getChildCount() > 1) group.getChildAt(1).setBackgroundColor(panel);
+            if (group.getChildCount() > 2) group.getChildAt(2).setBackgroundColor(background);
+        }
+
+        styleCard(findViewById(R.id.serverCard));
+        styleCard(findViewById(R.id.tokenCard));
+        styleCard(findViewById(R.id.toolActionsCard));
+        styleCard(findViewById(R.id.permissionsCard));
+        localUrlText.setTextColor(secondaryTextColor());
+        publicUrlText.setTextColor(primaryTextColor());
+        tokenText.setTextColor(primaryTextColor());
+        themeSwitch.setTextColor(Color.WHITE);
+
+        TextView headerBadge = (TextView) findViewById(R.id.headerBadgeText);
+        if (headerBadge != null) {
+            GradientDrawable badge = new GradientDrawable();
+            badge.setCornerRadius(dp(8));
+            badge.setColor(darkMode ? Color.rgb(35, 35, 35) : Color.rgb(43, 61, 91));
+            headerBadge.setBackgroundDrawable(badge);
+        }
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            int accent = darkMode ? Color.rgb(220, 220, 220) : Color.rgb(49, 94, 173);
+            themeSwitch.setThumbTintList(ColorStateList.valueOf(accent));
+            themeSwitch.setTrackTintList(ColorStateList.valueOf(
+                    darkMode ? Color.rgb(90, 90, 90) : Color.rgb(180, 194, 214)));
+            getWindow().setStatusBarColor(headerColor);
+            getWindow().setNavigationBarColor(darkMode ? Color.BLACK : Color.rgb(23, 32, 51));
+            if (Build.VERSION.SDK_INT >= 26) {
+                getWindow().getDecorView().setSystemUiVisibility(0);
+            }
+        }
+
+        if (root instanceof ViewGroup) {
+            ViewGroup group = (ViewGroup) root;
+            if (group.getChildCount() > 0 && group.getChildAt(0) instanceof ViewGroup) {
+                applyTextColors((ViewGroup) group.getChildAt(0), true);
+            }
+            if (group.getChildCount() > 2 && group.getChildAt(2) instanceof ViewGroup) {
+                applyTextColors((ViewGroup) group.getChildAt(2), false);
+            }
+        }
+        styleTab(tabDashboard, dashboardPanel.getVisibility() == View.VISIBLE);
+        styleTab(tabTools, toolsPanel.getVisibility() == View.VISIBLE);
+        styleTab(tabAccess, accessPanel.getVisibility() == View.VISIBLE);
+        updateServerToggleButton();
+        refreshStatus();
+    }
+
+    private void applyTextColors(ViewGroup group, boolean keepHeaderColors) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View child = group.getChildAt(i);
+            if (child instanceof TextView) {
+                TextView text = (TextView) child;
+                if (child == statusText) continue;
+                if (child == tabDashboard || child == tabTools || child == tabAccess || child == serverToggleButton) continue;
+                if (keepHeaderColors) continue;
+                float size = text.getTextSize() / getResources().getDisplayMetrics().scaledDensity;
+                text.setTextColor(size <= 11 ? secondaryTextColor() : primaryTextColor());
+                if (child instanceof Button && Build.VERSION.SDK_INT >= 21) {
+                    ((Button) child).setBackgroundTintList(ColorStateList.valueOf(
+                            darkMode ? Color.rgb(38, 38, 38) : Color.rgb(229, 235, 244)));
+                }
+            }
+            if (child instanceof ViewGroup) applyTextColors((ViewGroup) child, keepHeaderColors);
         }
     }
 

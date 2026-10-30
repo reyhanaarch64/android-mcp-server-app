@@ -93,6 +93,11 @@
             android:foregroundServiceType="dataSync|microphone|camera|location|connectedDevice|mediaProjection" />
 
         <receiver
+            android:name="mcp.android.phone.CopyUrlReceiver"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
             android:name="mcp.android.phone.ServiceRecoveryReceiver"
             android:enabled="true"
             android:exported="false" />
