@@ -1,189 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:orientation="vertical"
+    android:background="#F3F5F9">
+
     <LinearLayout
-        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Phone To MCP"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/statusText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Server berhenti"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/localUrlText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Lokal: http://127.0.0.1:9009/mcp"
-            android:textIsSelectable="true" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Tunnel:"
-            android:textSize="14sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/publicUrlText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Tunnel: belum aktif"
-            android:textColor="#1A73E8"
-            android:textIsSelectable="true"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <Button
-            android:id="@+id/startButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Start Server" />
-
-        <Button
-            android:id="@+id/stopButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Stop Server" />
-
-        <Button
-            android:id="@+id/terminalLogButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Log Terminal" />
-
-        <Button
-            android:id="@+id/permissionsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Minta Semua Izin Runtime" />
-
-        <Button
-            android:id="@+id/allOnButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aktifkan Semua Tool" />
-
-        <Button
-            android:id="@+id/allOffButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nonaktifkan Semua Tool" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Akses khusus"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/batteryButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Izinkan Berjalan Tanpa Optimasi Baterai" />
-
-        <Button
-            android:id="@+id/vivoButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buka Pengaturan Autostart Vivo" />
-
-        <Button
-            android:id="@+id/storageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kelola Semua File" />
-
-        <Button
-            android:id="@+id/notificationAccessButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Akses Notifikasi" />
-
-        <Button
-            android:id="@+id/accessibilityButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Aksesibilitas" />
-
-        <Button
-            android:id="@+id/usageButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Usage Access" />
-
-        <Button
-            android:id="@+id/overlayButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tampilkan Di Atas Aplikasi Lain" />
-
-        <Button
-            android:id="@+id/screenCaptureButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Berikan Akses Tangkapan Layar" />
-
-        <Button
-            android:id="@+id/writeSettingsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ubah Pengaturan Sistem" />
-
-        <TextView
-            android:id="@+id/tokenText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Token MCP"
-            android:textIsSelectable="true"
-            android:textSize="14sp" />
-
-        <Switch
-            android:id="@+id/authSwitch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Wajibkan token MCP" />
-
-        <Button
-            android:id="@+id/regenerateTokenButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Buat Token Baru" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Kontrol tool MCP"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="15dp"
+        android:background="#172033">
         <LinearLayout
-            android:id="@+id/toolContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PHONE TO MCP"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:letterSpacing="0.05" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="ANDROID CONTROL SERVER"
+                android:textColor="#AAB6CC"
+                android:textSize="10sp"
+                android:letterSpacing="0.12" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/headerBadgeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="MCP"
+            android:textColor="#DCE7FF"
+            android:textStyle="bold"
+            android:textSize="11sp"
+            android:background="#2B3D5B" />
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="false"
+        android:scrollbars="none"
+        android:background="#FFFFFF">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+            <Button
+                android:id="@+id/tabDashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:minWidth="104dp"
+                android:text="Dashboard"
+                android:textAllCaps="false"
+                android:textSize="13sp" />
+            <Button
+                android:id="@+id/tabTools"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginLeft="6dp"
+                android:minWidth="94dp"
+                android:text="Tools"
+                android:textAllCaps="false"
+                android:textSize="13sp" />
+            <Button
+                android:id="@+id/tabAccess"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginLeft="6dp"
+                android:minWidth="104dp"
+                android:text="Akses"
+                android:textAllCaps="false"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <ScrollView
+        android:id="@+id/contentScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </LinearLayout>
-</ScrollView>
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:id="@+id/dashboardPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/serverCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="STATUS SERVER"
+                        android:textColor="#748198"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                    <TextView
+                        android:id="@+id/statusText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="Server berhenti"
+                        android:textColor="#172033"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/localUrlText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="http://127.0.0.1:9009/mcp"
+                        android:textColor="#40516C"
+                        android:textSize="12sp"
+                        android:textIsSelectable="true" />
+                    <Button
+                        android:id="@+id/localUrlCopyButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Salin URL lokal"
+                        android:textAllCaps="false"
+                        android:textSize="12sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="PUBLIC TUNNEL"
+                        android:textColor="#748198"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                    <TextView
+                        android:id="@+id/publicUrlText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="URL tunnel belum tersedia"
+                        android:textColor="#315EAD"
+                        android:textSize="12sp"
+                        android:textIsSelectable="true" />
+                    <Button
+                        android:id="@+id/publicUrlCopyButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="4dp"
+                        android:text="Salin URL tunnel"
+                        android:textAllCaps="false"
+                        android:textSize="12sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="14dp">
+                        <Button
+                            android:id="@+id/startButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_weight="1"
+                            android:text="Start server"
+                            android:textAllCaps="false" />
+                        <Button
+                            android:id="@+id/stopButton"
+                            android:layout_width="0dp"
+                            android:layout_height="48dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:text="Stop server"
+                            android:textAllCaps="false" />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/terminalLogButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="7dp"
+                        android:text="Buka log terminal"
+                        android:textAllCaps="false" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tokenCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AUTENTIKASI MCP"
+                        android:textColor="#748198"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:letterSpacing="0.1" />
+                    <Switch
+                        android:id="@+id/authSwitch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Wajibkan token MCP"
+                        android:textColor="#172033" />
+                    <TextView
+                        android:id="@+id/tokenText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Token MCP"
+                        android:textColor="#40516C"
+                        android:textSize="12sp"
+                        android:textIsSelectable="true" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="7dp">
+                        <Button
+                            android:id="@+id/tokenCopyButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Salin token"
+                            android:textAllCaps="false" />
+                        <Button
+                            android:id="@+id/regenerateTokenButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:text="Token baru"
+                            android:textAllCaps="false" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/toolsPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/toolActionsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="KONTROL TOOL"
+                        android:textColor="#748198"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/toolHelpText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Atur tool yang boleh dipanggil melalui MCP. Tool penulisan dan kontrol perangkat sebaiknya diaktifkan sesuai kebutuhan."
+                        android:textColor="#64728A"
+                        android:textSize="12sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <Button
+                            android:id="@+id/allOnButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_weight="1"
+                            android:text="Aktifkan semua"
+                            android:textAllCaps="false" />
+                        <Button
+                            android:id="@+id/allOffButton"
+                            android:layout_width="0dp"
+                            android:layout_height="44dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_weight="1"
+                            android:text="Matikan semua"
+                            android:textAllCaps="false" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/toolContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accessPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/permissionsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AKSES &amp; PERMISSION"
+                        android:textColor="#748198"
+                        android:textSize="10sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="Buka halaman sistem untuk memberikan akses yang diperlukan oleh tool tertentu."
+                        android:textColor="#64728A"
+                        android:textSize="12sp" />
+                    <Button
+                        android:id="@+id/permissionsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:text="Minta izin runtime"
+                        android:textAllCaps="false" />
+                    <Button android:id="@+id/batteryButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Optimasi baterai" android:textAllCaps="false" />
+                    <Button android:id="@+id/vivoButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Autostart Vivo" android:textAllCaps="false" />
+                    <Button android:id="@+id/storageButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Akses semua file" android:textAllCaps="false" />
+                    <Button android:id="@+id/notificationAccessButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Akses notifikasi" android:textAllCaps="false" />
+                    <Button android:id="@+id/accessibilityButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Aksesibilitas" android:textAllCaps="false" />
+                    <Button android:id="@+id/usageButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Usage access" android:textAllCaps="false" />
+                    <Button android:id="@+id/overlayButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Tampilkan di atas aplikasi lain" android:textAllCaps="false" />
+                    <Button
+                        android:id="@+id/screenCaptureButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:text="Akses tangkapan layar"
+                        android:textAllCaps="false" />
+                    <Button android:id="@+id/writeSettingsButton" android:layout_width="match_parent" android:layout_height="44dp" android:text="Ubah pengaturan sistem" android:textAllCaps="false" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

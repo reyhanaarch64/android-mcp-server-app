@@ -1,6 +1,6 @@
 # android mcp server app
 
-android mcp server app adalah aplikasi android native yang mengekspos fungsi perangkat ke model ai via protokol mcp (model context protocol). project ini bukan hanya browser, tapi server kontrol perangkat: ia membuka endpoint mcp lokal di smartphone dan memungkinkan client ai mengakses fitur seperti kontak, sms, log panggilan, file, notifikasi, lokasi, kamera, media, browser, aksesibilitas, dan pengaturan sistem dengan skema tool yang bisa diaktifkan/ditutup.
+android mcp server app adalah aplikasi android native yang mengekspos fungsi perangkat ke model ai via protokol mcp (model context protocol). project ini bukan hanya browser, tapi server kontrol perangkat: ia membuka endpoint mcp lokal di smartphone dan memungkinkan client ai mengakses fitur seperti kontak, sms, log panggilan, file, notifikasi, lokasi, kamera, media, aksesibilitas, dan pengaturan sistem dengan skema tool yang bisa diaktifkan/ditutup.
 
 ## ringkasan
 
@@ -80,6 +80,12 @@ android-mcp-server-app/
 ├── LICENSE
 └── .github
 ```
+
+## pembaruan terbaru
+
+- **fitur browser dipindah.** `BrowserManager` dan tool `browser.*` sudah dihapus dari aplikasi ini dan dipisah ke aplikasi browser sendiri di repository [browser-for-models](https://github.com/reyhanaarch64/browser-for-models). alasannya, ekosistem browser untuk model AI dan tool umum perangkat sebaiknya dipisah supaya masing-masing lebih sederhana. versi lama yang masih berisi fitur browser ada di branch `legacy-browser`, dan proyek ini sudah tidak dilanjutkan di branch tersebut.
+- **tampilan baru.** ui dibuat ulang dengan sistem tab dan layout yang lebih rapi. icon memakai [font awesome](https://fontawesome.com) (`solid`, `regular`, `brands`) yang disimpan di `app/src/main/assets/fontawesome/`.
+- **tool `json.batch`.** editor json terstruktur untuk beberapa file sekaligus. tiap file diproses dan di-commit sendiri-sendiri, dan kegagalan satu aksi tidak menulis dokumen yang setengah diedit. backup dibuat sebelum file ditimpa (`JsonToolsManager.java`).
 
 ## komponen utama
 
@@ -164,8 +170,8 @@ fitur ini artinya app ini mengandung kemungkinan akses yang sangat luas ke data 
 ### 6. permisionutil dan permission android
 `PermissionUtil.java` menangani izin runtime dan pengaturan android yang relevan. repo ini memang sangat sadar bahwa banyak fitur hanya bisa tersedia jika user memberi izin ke app: storage, notification access, accessibility, overlay, battery optimization, usage access, write settings, location, camera, dan lain-lain.
 
-### 7. browser manager dan screen capture
-`BrowserManager.java` memberi kemampuan browser control. meskipun repo ini lebih general dari browser-for-models, ia masih punya support browser/webview tooling.
+### 7. screen capture
+`BrowserManager.java` sudah dipindah ke repository browser-for-models (lihat pembaruan terbaru).
 
 `ScreenCaptureManager.java` dan `ScreenCaptureActivity.java` menangani screenshot dan capture layar dari perangkat. `PhoneAccessibilityService.java` dan `PhoneNotificationListener.java` memberi akses ke UI dan notifikasi sistem.
 
@@ -186,7 +192,7 @@ repo ini jauh lebih kuat dan berisiko dibanding browser-only app karena mengandu
 - akses kamera/mikrofon
 - pengaturan sistem dan overlay
 - file system dan media
-- browser + webview + captura layar
+- screen capture
 - akses accessibility
 - package usage
 - AI terminal integration via termux

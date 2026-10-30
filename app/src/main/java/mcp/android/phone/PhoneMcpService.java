@@ -116,11 +116,12 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
     private String googleTtsLang = "id";
     private volatile boolean serviceStopping;
     private Thread healthWatchdogThread;
-    private BrowserManager browserManager;
+    private JsonToolsManager jsonToolsManager;
 
     public void onCreate() {
         super.onCreate();
         serviceStopping = false;
+        jsonToolsManager = new JsonToolsManager(this);
         createChannel();
         startForegroundCompat(NOTIFICATION_ID, buildNotification("Server sedang berjalan"), false);
         CrashDiagnostics.markServiceStarting(this);
@@ -178,7 +179,6 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
         stopCloudflared();
         stopRecordingInternal();
         stopTts();
-        if (browserManager != null) { browserManager.destroy(); browserManager = null; }
         if (server != null) server.stop();
         server = null;
         try { stopForeground(true); } catch (Exception ignored) { }
@@ -495,14 +495,8 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
             JSONArray content = new JSONArray();
             String imageData = value == null ? null : value.optString("__mcp_image_base64", null);
             String imageMime = value == null ? null : value.optString("__mcp_image_mime", "image/png");
-            String resourceBlob = value == null ? null : value.optString("__mcp_resource_base64", null);
-            String resourceMime = value == null ? null : value.optString("__mcp_resource_mime", "application/octet-stream");
-            String resourceUri = value == null ? null : value.optString("__mcp_resource_uri", "phone-mcp://browser/item/unknown");
             if (value != null && value.has("__mcp_image_base64")) value.remove("__mcp_image_base64");
             if (value != null && value.has("__mcp_image_mime")) value.remove("__mcp_image_mime");
-            if (value != null && value.has("__mcp_resource_base64")) value.remove("__mcp_resource_base64");
-            if (value != null && value.has("__mcp_resource_mime")) value.remove("__mcp_resource_mime");
-            if (value != null && value.has("__mcp_resource_uri")) value.remove("__mcp_resource_uri");
             JSONObject textItem = new JSONObject();
             textItem.put("type", "text");
             textItem.put("text", value == null ? "ok" : value.toString());
@@ -513,16 +507,6 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
                 imageItem.put("data", imageData);
                 imageItem.put("mimeType", imageMime);
                 content.put(imageItem);
-            }
-            if (resourceBlob != null && resourceBlob.length() > 0) {
-                JSONObject embedded = new JSONObject();
-                embedded.put("uri", resourceUri);
-                embedded.put("mimeType", resourceMime);
-                embedded.put("blob", resourceBlob);
-                JSONObject resourceItem = new JSONObject();
-                resourceItem.put("type", "resource");
-                resourceItem.put("resource", embedded);
-                content.put(resourceItem);
             }
             r.put("content", content);
             r.put("isError", false);
@@ -551,9 +535,9 @@ public class PhoneMcpService extends Service implements McpServer.McpToolHandler
     }
 
     private JSONObject execute(String n, JSONObject a) throws Exception {
-        if (n.startsWith("browser.")) {
-            if (browserManager == null) browserManager = new BrowserManager(this);
-            return browserManager.execute(n, a);
+        if (n.equals("json.batch")) {
+            if (jsonToolsManager == null) jsonToolsManager = new JsonToolsManager(this);
+            return jsonToolsManager.execute(a);
         }
         if (n.equals("terminal.exec")) {
             String command = a.optString("command", "");

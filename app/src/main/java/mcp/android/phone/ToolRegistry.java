@@ -48,6 +48,55 @@ public final class ToolRegistry {
         return o;
     }
 
+    private static JSONObject jsonBatchSchema() {
+        JSONObject schema = schema();
+        try {
+            JSONObject action = new JSONObject();
+            action.put("type", "object");
+            JSONObject actionProps = new JSONObject();
+            actionProps.put("operation", new JSONObject().put("type", "string")
+                    .put("enum", new JSONArray().put("get").put("set").put("add").put("insert")
+                            .put("remove").put("merge").put("rename").put("find").put("get_structure"))
+                    .put("description", "Operasi struktur JSON."));
+            actionProps.put("key", new JSONObject().put("type", "string").put("description", "JSON Pointer (/player/level) atau dot path (player.level, items[0].name). Kosong berarti root."));
+            actionProps.put("value", new JSONObject().put("description", "Nilai JSON dengan tipe asli: string, number, boolean, null, object, atau array."));
+            actionProps.put("index", new JSONObject().put("type", "integer").put("description", "Indeks tujuan untuk insert; default akhir array."));
+            actionProps.put("new_key", new JSONObject().put("type", "string").put("description", "Nama key baru untuk rename."));
+            actionProps.put("query", new JSONObject().put("type", "string").put("description", "Nama atau potongan nama key untuk find."));
+            actionProps.put("merge_mode", new JSONObject().put("type", "string").put("enum", new JSONArray().put("deep").put("shallow")));
+            actionProps.put("create_missing", new JSONObject().put("type", "boolean").put("description", "Buat parent object/array yang belum tersedia saat set."));
+            action.put("properties", actionProps);
+            action.put("required", new JSONArray().put("operation"));
+            action.put("additionalProperties", false);
+
+            JSONObject file = new JSONObject();
+            file.put("type", "object");
+            JSONObject fileProps = new JSONObject();
+            fileProps.put("root", new JSONObject().put("type", "string").put("enum", new JSONArray().put("shared").put("internal")).put("default", "shared").put("description", "Root file. Default shared."));
+            fileProps.put("path", new JSONObject().put("type", "string").put("description", "Path relatif terhadap root."));
+            fileProps.put("actions", new JSONObject().put("type", "array").put("items", action).put("description", "Operasi khusus untuk file ini; struktur tiap file boleh berbeda."));
+            fileProps.put("dry_run", new JSONObject().put("type", "boolean").put("description", "Simulasikan perubahan tanpa menulis file."));
+            fileProps.put("backup", new JSONObject().put("type", "boolean").put("description", "Buat backup sebelum menyimpan; default true."));
+            fileProps.put("pretty_print", new JSONObject().put("type", "boolean").put("description", "Format JSON dengan indentasi 2 spasi; default true."));
+            file.put("properties", fileProps);
+            file.put("required", new JSONArray().put("path").put("actions"));
+            file.put("additionalProperties", false);
+            fileProps.getJSONObject("actions").put("minItems", 1);
+            fileProps.getJSONObject("actions").put("maxItems", 100);
+
+            JSONObject filesProperty = new JSONObject();
+            filesProperty.put("type", "array");
+            filesProperty.put("minItems", 1);
+            filesProperty.put("maxItems", 10);
+            filesProperty.put("items", file);
+            filesProperty.put("description", "1 sampai 10 file JSON. Setiap file diproses dan divalidasi secara independen.");
+            schema.getJSONObject("properties").put("files", filesProperty);
+            schema.put("required", new JSONArray().put("files"));
+        } catch (Exception ignored) {
+        }
+        return schema;
+    }
+
     private static void add(String name, String desc, JSONObject schema, String category, int mode, boolean enabled) {
         TOOLS.put(name, new ToolDef(name, desc, schema, category, mode, enabled));
     }
@@ -65,23 +114,6 @@ public final class ToolRegistry {
         add("time.now", "Melihat waktu perangkat saat ini.", schema(), "device", ToolDef.ACCESS_READ, true);
         add("toast.show", "Menampilkan toast kepada pengguna.", schema(new String[]{"message","duration"}, new String[]{"string","string"}, new String[]{"Isi toast","short atau long"}, new String[]{"message"}), "ui", ToolDef.ACCESS_WRITE, true);
         add("url.open", "Membuka URL menggunakan aplikasi yang tersedia.", schema(new String[]{"url"}, new String[]{"string"}, new String[]{"URL lengkap"}, new String[]{"url"}), "ui", ToolDef.ACCESS_WRITE, true);
-        add("browser.open", "Membuka URL HTTP/HTTPS pada satu tab WebView internal yang sama. waitMs membatasi waktu tunggu halaman.", schema(new String[]{"url","waitMs"}, new String[]{"string","integer"}, new String[]{"URL situs HTTP/HTTPS","Waktu tunggu 500-30000 ms, default 18000"}, new String[]{"url"}), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.back", "Kembali satu langkah pada riwayat navigasi tab browser yang sama.", schema(), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.inspect", "Memeriksa metadata halaman dan elemen interaktif DOM; ref eN hanya berlaku untuk hasil inspeksi terbaru.", schema(new String[]{"limit"}, new String[]{"integer"}, new String[]{"Batas elemen interaktif 1-200, default 80"}, null), "browser", ToolDef.ACCESS_READ, true);
-        add("browser.click", "Memicu klik DOM pada elemen berdasarkan elementRef dari browser.inspect, selector CSS, atau teks tombol.", schema(new String[]{"elementRef","selector","text","settleMs"}, new String[]{"string","string","string","integer"}, new String[]{"Ref seperti e0 dari inspect","Selector CSS","Teks tombol/tautan","Waktu tunggu setelah klik 0-10000 ms"}, null), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.input", "Mengisi input, textarea, select, atau contenteditable pada halaman aktif; target berdasarkan elementRef, selector, id, name, atau placeholder.", schema(new String[]{"elementRef","selector","id","name","placeholder","value","clearFirst","settleMs"}, new String[]{"string","string","string","string","string","string","boolean","integer"}, new String[]{"Ref eN dari inspect","Selector CSS","ID elemen","Atribut name","Teks placeholder","Nilai yang diisikan","Ganti nilai (true) atau tambahkan ke nilai lama (false)","Waktu tunggu setelah input 0-5000 ms"}, new String[]{"value"}), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.scroll", "Menggulir halaman atau elemen tertentu ke atas, bawah, kiri, atau kanan.", schema(new String[]{"direction","pixels","selector","settleMs"}, new String[]{"string","integer","string","integer"}, new String[]{"up, down, left, atau right","Jarak gulir 1-10000 piksel, default 600","Selector CSS container scroll; kosong untuk halaman","Waktu tunggu setelah scroll 0-5000 ms"}, null), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.source", "Mengambil HTML DOM saat ini atau teks halaman, dengan batas panjang untuk melindungi respons.", schema(new String[]{"mode","maxChars"}, new String[]{"string","integer"}, new String[]{"html atau text, default html","Batas 100-100000 karakter"}, null), "browser", ToolDef.ACCESS_READ, true);
-        add("browser.screenshot", "Mengambil screenshot viewport WebView saat ini dan melampirkan hasilnya sebagai gambar MCP.", schema(), "browser", ToolDef.ACCESS_READ, true);
-        add("browser.clear_cookies", "Menghapus cookie yang terlihat untuk host situs aktif secara best-effort; tidak mengembalikan nilai cookie.", schema(), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.clear_localstorage", "Menghapus localStorage pada origin halaman aktif saja.", schema(), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.clear_sessionstorage", "Menghapus sessionStorage pada origin halaman aktif saja.", schema(), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.set_user_agent", "Mengatur User-Agent global WebView dan menyimpannya; halaman aktif dimuat ulang secara default.", schema(new String[]{"userAgent","reloadCurrent"}, new String[]{"string","boolean"}, new String[]{"User-Agent yang diinginkan; kosong atau default untuk bawaan WebView","Muat ulang halaman aktif agar request berikutnya memakai User-Agent baru, default true"}, new String[]{"userAgent"}), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.set_mode", "Memilih profil tampilan desktop atau mobile; menerapkan User-Agent profil dan viewport default.", schema(new String[]{"mode","reloadCurrent","waitMs"}, new String[]{"string","boolean","integer"}, new String[]{"desktop atau mobile","Muat ulang halaman aktif agar layout diterapkan, default true","Waktu tunggu reload 500-30000 ms, default 18000"}, new String[]{"mode"}), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.set_viewport", "Mengatur ukuran viewport CSS WebView tanpa mengubah profil mode atau User-Agent.", schema(new String[]{"width","height","reloadCurrent","waitMs"}, new String[]{"integer","integer","boolean","integer"}, new String[]{"Lebar 320-1280 CSS px","Tinggi 240-1000 CSS px","Muat ulang halaman aktif, default false","Waktu tunggu reload 500-30000 ms, default 18000"}, new String[]{"width","height"}), "browser", ToolDef.ACCESS_WRITE, true);
-        add("browser.item.list", "Mendaftar resource HTTP(S) yang teramati atau dirujuk halaman aktif, dengan ID item untuk pengambilan.", schema(new String[]{"limit"}, new String[]{"integer"}, new String[]{"Jumlah item terbaru 1-300, default 100"}, null), "browser", ToolDef.ACCESS_READ, true);
-        add("browser.get.item", "Mengambil ulang resource GET berdasarkan itemId; resource di atas batas byte ditolak, gambar dilampirkan sebagai image, teks ditampilkan, dan binari dilampirkan sebagai embedded MCP resource.", schema(new String[]{"itemId","maxBytes"}, new String[]{"string","integer"}, new String[]{"ID seperti r12 dari browser.item.list","Batas 1-20000000 byte, default 20000000"}, new String[]{"itemId"}), "browser", ToolDef.ACCESS_READ, true);
-        add("browser.debug.console", "Membaca entri console WebView seperti log, debug, warning, dan error yang berhasil ditangkap.", schema(new String[]{"level","limit","clearAfterRead"}, new String[]{"string","integer","boolean"}, new String[]{"all, error, warning/warn, log/info, debug, atau tip","Batas entri 1-500, default 100","Hapus seluruh entri setelah diambil"}, null), "browser", ToolDef.ACCESS_READ, true);
         add("clipboard.read", "Membaca teks clipboard bila Android mengizinkannya.", schema(), "clipboard", ToolDef.ACCESS_READ, false);
         add("clipboard.write", "Menulis teks ke clipboard.", schema(new String[]{"text"}, new String[]{"string"}, new String[]{"Teks"}, new String[]{"text"}), "clipboard", ToolDef.ACCESS_WRITE, false);
 
@@ -100,6 +132,8 @@ public final class ToolRegistry {
         add("editor.read_file", "Editor MCP: membaca file teks.", schema(new String[]{"root","path","maxBytes"}, new String[]{"string","string","integer"}, new String[]{"internal atau shared","Path file","Batas byte"}, new String[]{"root","path"}), "files", ToolDef.ACCESS_READ, false);
         add("editor.create_file", "Editor MCP: membuat file kode/teks baru.", schema(new String[]{"root","path","content"}, new String[]{"string","string","string"}, new String[]{"internal atau shared","Path file","Isi file"}, new String[]{"root","path"}), "files", ToolDef.ACCESS_WRITE, false);
         add("editor.edit_file", "Editor MCP: mengganti teks secara literal atau regex.", schema(new String[]{"root","path","find","replace","regex"}, new String[]{"string","string","string","string","boolean"}, new String[]{"internal atau shared","Path file","Teks yang dicari","Pengganti","Gunakan regex"}, new String[]{"root","path","find","replace"}), "files", ToolDef.ACCESS_WRITE, false);
+
+        add("json.batch", "Memanipulasi struktur 1-10 file JSON dalam satu pemanggilan. Setiap file memiliki actions, struktur, dan transaksi independen. Mendukung get, set, add, insert, remove, merge, rename, find, get_structure; value mempertahankan tipe JSON aslinya.", jsonBatchSchema(), "json", ToolDef.ACCESS_WRITE, false);
 
         add("contacts.read", "Membaca daftar kontak.", schema(new String[]{"query","limit"}, new String[]{"string","integer"}, new String[]{"Pencarian nama/nomor","Batas hasil"}, null), "contacts", ToolDef.ACCESS_READ, false);
         add("contacts.list", "Membaca seluruh daftar kontak yang dapat dikembalikan oleh ContactsProvider.", schema(new String[]{"limit"}, new String[]{"integer"}, new String[]{"Batas hasil, default 10000"}, null), "contacts", ToolDef.ACCESS_READ, false);
